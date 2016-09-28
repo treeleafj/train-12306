@@ -1,9 +1,5 @@
 package org.leaf.train.model;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * 旅程信息
  *
@@ -13,15 +9,17 @@ import java.util.Date;
 public class Journey {
 
     /**
+     * 车次代码
+     */
+    private String code;
+    /**
      * 上车站代码
      */
     private String from;
-
     /**
      * 下车站代码
      */
     private String to;
-
     /**
      * 日期
      */
@@ -33,34 +31,24 @@ public class Journey {
         this.date = date;
     }
 
-    public Journey(String from, String to, Date date) {
-        this.from = from;
-        this.to = to;
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        this.date = dateFormat.format(date);
+    public Journey(String code, String from, String to, String date) {
+        this(from, to, date);
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
     }
 
     public String getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
     public String getTo() {
         return to;
     }
 
-    public void setTo(String to) {
-        this.to = to;
-    }
-
     public String getDate() {
         return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 }

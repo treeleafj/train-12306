@@ -14,7 +14,7 @@ public class TrainTicket {
     private String train_no;
 
     /**
-     *车次号
+     * 车次号
      */
     private String station_train_code;
 

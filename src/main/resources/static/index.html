@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>查询火车票</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <form class="form-inline" role="form">
+        <div class="form-group" style="margin-right: 5px;">
+            <label for="from" class="control-label">出发地:</label>
+            <input id="from" class="form-control" value="潮阳"/>
+        </div>
+        <div class="form-group" style="margin-right: 5px;">
+            <label for="to" class="control-label">目的地:</label>
+            <input id="to" class="form-control" value="深圳北"/>
+        </div>
+        <div class="form-group" style="margin-right: 5px;">
+            <label for="date" class="control-label">日期:</label>
+            <input id="date" class="form-control" value="2016-11-01"/>
+        </div>
+        <div class="form-group" style="margin-right: 5px;">
+            <label for="code" class="control-label">车次:</label>
+            <input id="code" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <button type="button" id="search" class="btn btn-lg btn-success">查询</button>
+        </div>
+    </form>
+    <table id="grid" class="table table-hove">
+    </table>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#search').click(function () {
+            var from = $('#from').val();
+            var to = $('#to').val();
+            var date = $('#date').val();
+            if (!from) {
+                alert('请输入出发地');
+                return;
+            }
+            if (!to) {
+                alert('请输入目的地');
+                return;
+            }
+            if (!date) {
+                alert('请输入日期');
+                return;
+            }
+
+            $.getJSON('search', {
+                from : from,
+                to : to,
+                date : date
+            }, function (data) {
+                console.log(data);
+                var html = '<th><td>车次</td><td>类型</td><td>出发地</td><td>目的地</td>' +
+                        '<td>发车时间</td><td>商务座</td><td>一等座</td><td>二等座</td><td>无座</td></th>'
+                for (var i = 0; i < data.length; i++) {
+                   var train = data[i];
+                    for (var j = 0; j < train.list.length; j++) {
+                        var item = train.list[j];
+                        html += '<tr>';
+                        html += '<td>' + train.trainCode + '</td>';
+                        html += '<td>' + item.type + '</td>';
+                        html += '<td>' + item.fromStationName + '</td>';
+                        html += '<td>' + item.toStationName + '</td>';
+                        html += '<td>' + item.startTime + '</td>';
+                        html += '<td>' + item.swzNum + '</td>';
+                        html += '<td>' + item.ydzNum + '</td>';
+                        html += '<td>' + item.edzNum + '</td>';
+                        html += '<td>' + item.wzNum + '</td>';
+                        html += '</tr>';
+                    }
+                }
+
+                $('#grid').html(html);
+            });
+
+        });
+    });
+</script>
+</body>
+</html>

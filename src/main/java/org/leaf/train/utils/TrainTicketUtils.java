@@ -37,6 +37,9 @@ public class TrainTicketUtils {
      * @return
      */
     public static int ticketNum(TrainTicket trainTicket) {
+        if (trainTicket == null) {
+            System.out.println(trainTicket);
+        }
         int num = toNum(trainTicket.getGg_num()) +
                 toNum(trainTicket.getGr_num()) +
                 toNum(trainTicket.getQt_num()) +

@@ -6,7 +6,7 @@ package org.leaf.train.model;
  * @author yaoshuhong
  * @date 2016-09-27 17:11
  */
-public class TrainSite {
+public class TrainStation {
 
     /**首发站名(中文)*/
     private String start_station_name;
