@@ -65,6 +65,7 @@ public class Application {
 
     public static void main(String[] args) throws ParseException {
         SpringApplication.run(Application.class, args);
+        log.info("程序启动完毕!");
     }
 
 }

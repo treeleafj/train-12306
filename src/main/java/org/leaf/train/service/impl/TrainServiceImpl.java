@@ -240,6 +240,11 @@ public class TrainServiceImpl implements TrainService {
                 newJourney = new Journey(stations.get(0).getStation_train_code(), station.getStation_name(), journey.getTo(), journey.getDate());
                 newTicket = ticket(newJourney);
             }
+
+            if (newTicket == null) {//这个时候就真的没有了
+                return null;
+            }
+
             int num = TrainTicketUtils.ticketNum(newTicket);
             if (num > 0) {//第一个有票的站就返回
                 return newTicket;
@@ -335,6 +340,10 @@ public class TrainServiceImpl implements TrainService {
             if (newTicket == null) {//可能双车次号
                 newJourney = new Journey(stations.get(0).getStation_train_code(), journey.getFrom(), station.getStation_name(), journey.getDate());
                 newTicket = ticket(newJourney);
+            }
+
+            if (newTicket == null) {//这个时候就真的没有了
+                return null;
             }
 
             int num = TrainTicketUtils.ticketNum(newTicket);
