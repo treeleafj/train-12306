@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,14 +22,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
 /**
  * @author yaoshuhong
  * @date 2016-09-27 14:47
  */
 @Controller
-//@EnableWebSecurity
+@EnableWebSecurity
 @SpringBootApplication
 public class Application {
 
@@ -42,21 +41,20 @@ public class Application {
 
     @ResponseBody
     @RequestMapping("search")
-    public Object search(String from, String to, String date) throws ParseException {
+    public Object search(Journey journey) throws ParseException {
 
-        Assert.notNull(from, "出发地不能为空");
-        Assert.notNull(to, "目的地不能为空");
-        Assert.notNull(date, "出发日期不能为空");
+        Assert.notNull(journey.getFrom(), "出发地不能为空");
+        Assert.notNull(journey.getTo(), "目的地不能为空");
+        Assert.notNull(journey.getDate(), "出发日期不能为空");
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         try {
-            dateFormat.parse(date);
+            dateFormat.parse(journey.getDate());
         } catch (ParseException e) {
-            log.warn("日期格式化失败:{}", date);
+            log.warn("日期格式化失败:{}", journey.getDate());
             throw new AssertException("出发日期格式错误!!!");
         }
 
-        Journey journey = new Journey(from, to, date);
         TrainService trainService = new TrainServiceImpl();
 
         List<SearchResult> list = trainService.search(journey);

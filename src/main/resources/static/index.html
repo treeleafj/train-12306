@@ -6,42 +6,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>查询火车票</title>
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="bootstrap-datetimepicker.min.css">
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="spin.min.js"></script>
+    <script src="moment-with-locales.js"></script>
+    <script src="bootstrap-datetimepicker.min.js"></script>
 </head>
 <body>
-<div class="container">
+<div class="container" style="padding-top: 30px;">
     <form class="form-inline" role="form">
         <div class="form-group" style="margin-right: 5px;">
             <label for="from" class="control-label">出发地:</label>
-            <input id="from" class="form-control" value="潮阳"/>
+            <input type="text" id="from" class="form-control"/>
         </div>
         <div class="form-group" style="margin-right: 5px;">
             <label for="to" class="control-label">目的地:</label>
-            <input id="to" class="form-control" value="深圳北"/>
+            <input type="text" id="to" class="form-control"/>
         </div>
-        <div class="form-group" style="margin-right: 5px;">
-            <label for="date" class="control-label">日期:</label>
-            <input id="date" class="form-control" value="2016-11-01"/>
+        <div class="form-group rows" style="margin-right: 5px;">
+            <div class='col-sm-12'>
+                <label for="date" class="control-label">日期:</label>
+                <input type='text' class="form-control" id='date'/>
+            </div>
         </div>
         <div class="form-group" style="margin-right: 5px;">
             <label for="code" class="control-label">车次:</label>
-            <input id="code" class="form-control"/>
+            <input id="code" class="form-control" placeholder="输入完整车次"/>
         </div>
         <div class="form-group">
-            <button type="button" id="search" class="btn btn-lg btn-success">查询</button>
+            <button type="button" id="search" class="btn btn-success">查询</button>
         </div>
     </form>
-    <table id="grid" class="table table-hove">
+    <br/>
+    <table id="grid" class="table table-hove" align="center">
     </table>
+    <div id="foo"></div>
 </div>
 <script type="text/javascript">
+
+    var opts = {
+        lines: 9
+        , length: 16
+        , width: 5
+        , radius: 10
+        , scale: 1.0
+        , corners: 1
+        , color: '#357EBD'
+        , opacity: 0.25
+        , rotate: 0
+        , direction: 1
+        , speed: 1
+        , trail: 100
+        , fps: 20
+        , zIndex: 2e9
+        , className: 'spinner'
+        , top: '50%'
+        , left: '50%'
+        , shadow: true
+        , hwaccel: false
+        , position: 'absolute'
+    };
+
+    $.fn.spin = function (opts) {//loading插件
+        this.each(function () {
+            var $this = $(this),
+                    data = $this.data();
+            if (data.spinner) {
+                data.spinner.stop();
+                delete data.spinner;
+            }
+            if (opts !== false) {
+                data.spinner = new Spinner(opts).spin(this);
+            }
+        });
+        return this;
+    };
+
     $(function () {
+
+        $('#date').datetimepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+        var title = '<tr><th>车次</th><th>类型</th><th>出发地</th><th>目的地</th>' +
+                '<th>发车时间</th><th>商务座</th><th>一等座</th><th>二等座</th><th>无座</th></tr>';
+        $('#grid').html(title);
+
         $('#search').click(function () {
             var from = $('#from').val();
             var to = $('#to').val();
             var date = $('#date').val();
+            var code = $('#code').val();
             if (!from) {
                 alert('请输入出发地');
                 return;
@@ -54,36 +110,69 @@
                 alert('请输入日期');
                 return;
             }
+            var grid = $('#grid');
+            grid.html(title);
+            grid.spin(opts);
 
-            $.getJSON('search', {
-                from : from,
-                to : to,
-                date : date
-            }, function (data) {
-                console.log(data);
-                var html = '<th><td>车次</td><td>类型</td><td>出发地</td><td>目的地</td>' +
-                        '<td>发车时间</td><td>商务座</td><td>一等座</td><td>二等座</td><td>无座</td></th>'
-                for (var i = 0; i < data.length; i++) {
-                   var train = data[i];
-                    for (var j = 0; j < train.list.length; j++) {
-                        var item = train.list[j];
-                        html += '<tr>';
-                        html += '<td>' + train.trainCode + '</td>';
-                        html += '<td>' + item.type + '</td>';
-                        html += '<td>' + item.fromStationName + '</td>';
-                        html += '<td>' + item.toStationName + '</td>';
-                        html += '<td>' + item.startTime + '</td>';
-                        html += '<td>' + item.swzNum + '</td>';
-                        html += '<td>' + item.ydzNum + '</td>';
-                        html += '<td>' + item.edzNum + '</td>';
-                        html += '<td>' + item.wzNum + '</td>';
-                        html += '</tr>';
+            $('#search').attr('disabled', true);
+
+            $.ajax({
+                type: 'get',
+                url: 'search',
+                dataType: 'json',
+                data: {
+                    from: from,
+                    to: to,
+                    date: date,
+                    code: code
+                },
+                success: function (data) {
+
+                    $('#grid').spin(false);
+                    $('#search').attr('disabled', false);
+
+                    var html = title;
+
+                    for (var i = 0; i < data.length; i++) {
+                        var train = data[i];
+                        for (var j = 0; j < train.list.length; j++) {
+                            var item = train.list[j];
+                            html += '<tr>';
+                            if (j == 0 && train.list.length > 1) {
+                                var height = 27 * train.list.length;
+                                html += `<td rowspan="${train.list.length}" style="line-height:${height}px;">${train.trainCode}</td>`;
+                            } else if (j == 0) {
+                                html += `<td rowspan="${train.list.length}">${train.trainCode}</td>`;
+                            }
+                            var color;
+                            if (item.type.value == 2) {
+                                color = 'blue';
+                            } else if (item.type.value == 3) {
+                                color = 'red';
+                            } else if (item.type.value == 4) {
+                                color = 'green';
+                            } else {
+                                color = 'none'
+                            }
+                            html += `<td style="color:${color}">${item.type.desc}</td>`;
+
+                            html += `<td>${item.fromStationName}</td>`;
+                            html += `<td>${item.toStationName}</td>`;
+                            html += `<td>${item.startTime}</td>`;
+                            html += `<td>${item.swzNum}</td>`;
+                            html += `<td>${item.ydzNum}</td>`;
+                            html += `<td>${item.edzNum}</td>`;
+                            html += `<td>${item.wzNum}</td>`;
+                            html += `</tr>`;
+                        }
                     }
+                    $('#grid').html(html);
+                },
+                error: function (e) {
+                    console.error(e);
+                    alert('请求错误,请刷新重新尝试!' + e.responseJSON.message);
                 }
-
-                $('#grid').html(html);
             });
-
         });
     });
 </script>

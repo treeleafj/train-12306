@@ -25,6 +25,9 @@ public class Journey {
      */
     private String date;
 
+    public Journey() {
+    }
+
     public Journey(String from, String to, String date) {
         this.from = from;
         this.to = to;
@@ -40,15 +43,35 @@ public class Journey {
         return code;
     }
 
+    public Journey setCode(String code) {
+        this.code = code;
+        return this;
+    }
+
     public String getFrom() {
         return from;
+    }
+
+    public Journey setFrom(String from) {
+        this.from = from;
+        return this;
     }
 
     public String getTo() {
         return to;
     }
 
+    public Journey setTo(String to) {
+        this.to = to;
+        return this;
+    }
+
     public String getDate() {
         return date;
+    }
+
+    public Journey setDate(String date) {
+        this.date = date;
+        return this;
     }
 }

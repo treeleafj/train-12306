@@ -46,6 +46,12 @@ public class TrainServiceImpl implements TrainService {
 
             String r = new GetEx(url).send();
             log.info("第{}次查询", count.addAndGet(1));
+
+            if ("-1".equals(r)) {//查询错误
+                log.error("查询错误:{}", url);
+                return Collections.emptyList();
+            }
+
             try {
                 TrainResponse trainResponse = Jsoner.toObj(r, TrainResponse.class);
                 if (!trainResponse.getStatus()) {
@@ -99,6 +105,10 @@ public class TrainServiceImpl implements TrainService {
         String url = ft.getMessage();
 
         String r = new GetEx(url).send();
+        if ("-1".equals(r)) {//查询错误
+            log.error("查询错误:{}", url);
+            return Collections.emptyList();
+        }
 
         TrainResponse trainResponse = Jsoner.toObj(r, TrainResponse.class);
 
