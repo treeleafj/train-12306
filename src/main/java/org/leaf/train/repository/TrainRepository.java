@@ -1,5 +1,6 @@
 package org.leaf.train.repository;
 
+import org.leaf.train.entity.Price;
 import org.leaf.train.entity.Station;
 import org.leaf.train.entity.TrainInfo;
 import org.leaf.train.entity.Journey;
@@ -36,4 +37,6 @@ public interface TrainRepository {
      * @return
      */
     List<Station> stations(String trainNo, Journey journey);
+
+    Price price(String trainNo, String fromTrainIndex, String toTrainIndex, String date);
 }

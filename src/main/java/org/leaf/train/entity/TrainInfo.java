@@ -49,6 +49,11 @@ public class TrainInfo {
     private String fromStationName;
 
     /**
+     * 上车站顺序编号
+     */
+    private String fromStationNo;
+
+    /**
      * 下车站代码
      */
     private String toStationTeleCode;
@@ -57,6 +62,11 @@ public class TrainInfo {
      * 下车站名称(中文名)
      */
     private String toStationName;
+
+    /**
+     * 下车站顺序编号
+     */
+    private String toStationNo;
 
     /**
      * 上车站出发时间
@@ -397,6 +407,24 @@ public class TrainInfo {
 
     public TrainInfo setSwzNum(int swzNum) {
         this.swzNum = swzNum;
+        return this;
+    }
+
+    public String getFromStationNo() {
+        return fromStationNo;
+    }
+
+    public TrainInfo setFromStationNo(String fromStationNo) {
+        this.fromStationNo = fromStationNo;
+        return this;
+    }
+
+    public String getToStationNo() {
+        return toStationNo;
+    }
+
+    public TrainInfo setToStationNo(String toStationNo) {
+        this.toStationNo = toStationNo;
         return this;
     }
 }

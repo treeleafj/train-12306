@@ -2,6 +2,7 @@ package org.leaf.train.service.impl;
 
 import org.leaf.train.entity.BuyTicketMode;
 import org.leaf.train.entity.Journey;
+import org.leaf.train.entity.Price;
 import org.leaf.train.entity.Station;
 import org.leaf.train.entity.TrainInfo;
 import org.leaf.train.entity.TravelPlan;
@@ -29,6 +30,11 @@ public class TrainServiceImpl implements TrainService {
 
     @Autowired
     private TrainRepository trainRepository;
+
+    @Override
+    public Price price(String trainNo, String fromNo, String toNo, String date) {
+        return trainRepository.price(trainNo, fromNo, toNo, date);
+    }
 
     @Override
     public List<TravelPlanCollection> search(Journey journey) {

@@ -5,14 +5,13 @@ import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.config.units.MemoryUnit;
 import org.ehcache.expiry.Duration;
 import org.ehcache.expiry.Expirations;
+import org.leaf.train.entity.Journey;
+import org.leaf.train.entity.Price;
 import org.leaf.train.entity.Station;
 import org.leaf.train.entity.TrainInfo;
-import org.leaf.train.entity.Journey;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +30,9 @@ public class CacheUtils {
 
             .withCache("tickets", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, ArrayList.class, ResourcePoolsBuilder.heap(100000))
                     .withExpiry(Expirations.timeToLiveExpiration(Duration.of(1, TimeUnit.MINUTES))).build())
+
+            .withCache("prices", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, Price.class, ResourcePoolsBuilder.heap(100000))
+                    .withExpiry(Expirations.timeToLiveExpiration(Duration.of(1, TimeUnit.DAYS))).build())
             .build(true);
 
     /**
@@ -85,6 +87,36 @@ public class CacheUtils {
     }
 
     /**
+     * 从缓存里获取车票价格
+     *
+     * @param trainNo
+     * @param fromNo
+     * @param toNo
+     * @param date
+     * @return
+     */
+    public static Price getPrice(String trainNo, String fromNo, String toNo, String date) {
+        String key = buildPriceKey(trainNo, fromNo, toNo, date);
+        Cache<String, Price> cache = manager.getCache("prices", String.class, Price.class);
+        return cache.get(key);
+    }
+
+    /**
+     * 车票价格存到缓存
+     *
+     * @param trainNo
+     * @param fromNo
+     * @param toNo
+     * @param date
+     * @param price
+     */
+    public static void putPrice(String trainNo, String fromNo, String toNo, String date, Price price) {
+        String key = buildPriceKey(trainNo, fromNo, toNo, date);
+        Cache<String, Price> cache = manager.getCache("prices", String.class, Price.class);
+        cache.put(key, price);
+    }
+
+    /**
      * 构建站点缓存信息的key
      *
      * @param trainNo 列车编号
@@ -114,4 +146,7 @@ public class CacheUtils {
         return sb.toString();
     }
 
+    private static String buildPriceKey(String trainNo, String fromNo, String toNo, String date) {
+        return trainNo + fromNo + toNo + date;
+    }
 }

@@ -2,6 +2,7 @@ package org.leaf.train.repository.impl;
 
 import org.apache.commons.lang3.StringUtils;
 import org.leaf.train.entity.Journey;
+import org.leaf.train.entity.Price;
 import org.leaf.train.entity.Station;
 import org.leaf.train.entity.TrainInfo;
 import org.leaf.train.repository.TrainRepository;
@@ -13,6 +14,7 @@ import org.leaf.train.repository.model.TrainTicket;
 import org.leaf.train.utils.CacheUtils;
 import org.leaf.train.utils.GetEx;
 import org.leaf.train.utils.StationUtils;
+import org.leaf.train.utils.TrainTicketUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.FormattingTuple;
@@ -23,6 +25,7 @@ import org.treeleaf.common.safe.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -49,18 +52,18 @@ public class TrainRepositoryImpl implements TrainRepository {
             log.info("第{}次查询", count.addAndGet(1));
             if ("-1".equals(r)) {//查询错误
                 log.error("查询错误:{}", url);
-                return new ArrayList();
+                return new ArrayList<>(0);
             }
 
             try {
                 TrainResponse trainResponse = Jsoner.toObj(r, TrainResponse.class);
                 if (!trainResponse.getStatus()) {
-                    trainTickets = new ArrayList();
+                    trainTickets = new ArrayList<>(0);
                 } else {
                     List<TrainTicket> list = Jsoner.toArray(Jsoner.toJson(trainResponse.getData().get("datas")), TrainTicket.class);
 
                     if (list == null) {//可能查询失败
-                        return new ArrayList();
+                        return new ArrayList<>(0);
                     }
 
                     trainTickets = new ArrayList<>(list.size());
@@ -88,7 +91,7 @@ public class TrainRepositoryImpl implements TrainRepository {
             }
         }
 
-        return new ArrayList();
+        return new ArrayList<>(0);
     }
 
     @Override
@@ -113,18 +116,18 @@ public class TrainRepositoryImpl implements TrainRepository {
         String r = new GetEx(url).send();
         if ("-1".equals(r)) {//查询错误
             log.error("查询错误:{}", url);
-            return new ArrayList();
+            return new ArrayList<>(0);
         }
 
         TrainResponse trainResponse = Jsoner.toObj(r, TrainResponse.class);
 
         if (!trainResponse.getStatus()) {
-            result = new ArrayList();
+            result = new ArrayList<>(0);
         } else {
             List<TrainStation> list = Jsoner.toArray(Jsoner.toJson(trainResponse.getData().get("data")), TrainStation.class);
 
             if (list == null) {//可能查询失败
-                return new ArrayList();
+                return new ArrayList<>(0);
             }
 
             result = new ArrayList<>(list.size());
@@ -135,5 +138,47 @@ public class TrainRepositoryImpl implements TrainRepository {
 
         CacheUtils.putStations(trainNo, journey, result);//存到缓存里
         return result;
+    }
+
+    @Override
+    public Price price(String trainNo, String fromTrainIndex, String toTrainIndex, String date) {
+
+        Price price = CacheUtils.getPrice(trainNo, fromTrainIndex, toTrainIndex, date);
+        if (price != null) {
+            return price;
+        }
+
+        String s = "https://kyfw.12306.cn/otn/leftTicket/queryTicketPrice?train_no={}&from_station_no={}&to_station_no={}&seat_types=OMO&train_date={}";
+        FormattingTuple ft = MessageFormatter.arrayFormat(s, new Object[]{trainNo, fromTrainIndex, toTrainIndex, date});
+        String url = ft.getMessage();
+        log.info("chaxun ");
+        String r = new GetEx(url).send();
+        if ("-1".equals(r)) {//查询错误
+            return null;
+        }
+
+        TrainResponse trainResponse = Jsoner.toObj(r, TrainResponse.class);
+        if (!trainResponse.getStatus()) {
+            return null;
+        }
+
+        Map data = trainResponse.getData();
+
+        //格式统一为"¥98.5"
+        price = new Price();
+        price.setTranNo((String) data.get("train_no"));
+        price.setEdzNum(TrainTicketUtils.toPrice((String) data.get("O")));
+        price.setYdzNum(TrainTicketUtils.toPrice((String) data.get("M")));
+        price.setWzNum(TrainTicketUtils.toPrice((String) data.get("WZ")));
+        price.setSwzNum(TrainTicketUtils.toPrice((String) data.get("A9")));
+        price.setGjrwNum(TrainTicketUtils.toPrice((String) data.get("A6")));
+        price.setRwNum(TrainTicketUtils.toPrice((String) data.get("A4")));
+        price.setYwNum(TrainTicketUtils.toPrice((String) data.get("A3")));
+        price.setYzNum(TrainTicketUtils.toPrice((String) data.get("A1")));
+        price.setTdzNum(TrainTicketUtils.toPrice((String) data.get("P")));
+
+        CacheUtils.putPrice(trainNo, fromTrainIndex, toTrainIndex, date, price);
+
+        return price;
     }
 }

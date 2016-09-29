@@ -1,12 +1,18 @@
 package org.leaf.train.utils;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.leaf.train.entity.TrainInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author leaf
  * @date 2016-09-27 17:37
  */
 public class TrainTicketUtils {
+
+    private static Logger log = LoggerFactory.getLogger(TrainTicketUtils.class);
 
     /**
      * 获取有座位的票数
@@ -57,6 +63,25 @@ public class TrainTicketUtils {
             return 1;
         } else {
             return Integer.parseInt(num);
+        }
+    }
+
+    /**
+     * 将高铁票的金额转为double
+     *
+     * @param s
+     * @return
+     */
+    public static double toPrice(String s) {
+        if (StringUtils.isBlank(s)) {
+            return 0;
+        }
+        String p = s.replaceAll("¥", "");
+        if (NumberUtils.isNumber(p)) {
+            return NumberUtils.toDouble(p, 0);
+        } else {
+            log.error("未知的金额类型:{}", p);
+            return 0;
         }
     }
 }

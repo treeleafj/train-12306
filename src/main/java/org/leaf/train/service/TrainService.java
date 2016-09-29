@@ -1,6 +1,7 @@
 package org.leaf.train.service;
 
 import org.leaf.train.entity.Journey;
+import org.leaf.train.entity.Price;
 import org.leaf.train.entity.TravelPlan;
 import org.leaf.train.entity.TravelPlanCollection;
 
@@ -12,6 +13,17 @@ import java.util.List;
  * Created by leaf on 2016/9/27 027.
  */
 public interface TrainService {
+
+    /**
+     * 查询车票价格
+     *
+     * @param trainNo 列车编号
+     * @param fromNo  上车站点顺序编号
+     * @param toNo    下车站顺序编号
+     * @param date    日期(yyyy-mm-dd)
+     * @return
+     */
+    Price price(String trainNo, String fromNo, String toNo, String date);
 
     /**
      * 查询有票的车次,可查询:中途上车补票,往后买多几个站,往前买多几个站

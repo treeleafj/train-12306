@@ -1,6 +1,7 @@
 package org.leaf.train;
 
 import org.leaf.train.entity.Journey;
+import org.leaf.train.entity.Price;
 import org.leaf.train.entity.TravelPlanCollection;
 import org.leaf.train.service.TrainService;
 import org.leaf.train.utils.PrintUtils;
@@ -64,6 +65,38 @@ public class Application {
         list.forEach(e -> PrintUtils.print(e));
 
         return list;
+    }
+
+    /**
+     * 查询价格
+     *
+     * @param trainNo 列车编号
+     * @param fromNo  上车站点顺序编号
+     * @param toNo    下车站顺序编号
+     * @param date    日期(yyyy-mm-dd)
+     * @return
+     */
+    @RequestMapping("price")
+    public Price price(String trainNo, String fromNo, String toNo, String date) {
+        Assert.notNull(trainNo, "列车编号不能为空");
+        Assert.notNull(fromNo, "上车站点顺序编号不能为空");
+        Assert.notNull(toNo, "下车站顺序编号不能为空");
+        Assert.notNull(date, "日期不能为空");
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        try {
+            dateFormat.parse(date);
+        } catch (ParseException e) {
+            log.warn("日期格式化失败:{}", date);
+            throw new AssertException("出发日期格式错误!!!");
+        }
+
+        Price price = trainService.price(trainNo, fromNo, toNo, date);
+        if (price != null) {
+            return price;
+        } else {
+            return new Price();
+        }
     }
 
     public static void main(String[] args) throws ParseException {
