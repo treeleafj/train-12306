@@ -30,7 +30,7 @@ public class CacheUtils {
                     .withExpiry(Expirations.timeToLiveExpiration(Duration.of(1, TimeUnit.HOURS))).build())
 
             .withCache("tickets", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, ArrayList.class, ResourcePoolsBuilder.heap(100000))
-                    .withExpiry(Expirations.timeToLiveExpiration(Duration.of(1, TimeUnit.HOURS))).build())
+                    .withExpiry(Expirations.timeToLiveExpiration(Duration.of(1, TimeUnit.MINUTES))).build())
             .build(true);
 
     /**
