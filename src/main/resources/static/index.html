@@ -102,8 +102,27 @@
             success : function (price) {
                 var tr = $(el);
                 var tds = tr.find('td');
+
+                var firstCell = tds.eq(0);
+                var rowSpan = firstCell.attr('rowspan');
+                var flag = rowSpan > 1;//说明是group里面的第一行
+
+                var num = 0;
+
+                if (flag) {
+                    num = 1;
+                    firstCell.attr('rowspan', parseInt(rowSpan) + 1);
+                    firstCell.css('line-height', parseInt(firstCell.css('line-height')) + 30 + 'px');
+
+                } else if (tds.length == 13) {
+                    var cell = tr.prevAll('.group').eq(0).find('td').eq(0);
+                    cell.attr('rowspan', parseInt(cell.attr('rowspan')) + 1);
+                    cell.css('line-height', parseInt(cell.css('line-height')) + 30 + 'px');
+                    num = 0;
+                }
+
                 var html = '<tr style="background-color: rgba(190, 201, 204, 0.27);color:#AF6B6B;">';
-                for (var i = 0; i < tds.length - 9; i++) {
+                for (var i = 0; i < tds.length - 9 - num; i++) {
                     html += '<td></td>';
                 }
                 html += `<td>${price.swz > 0 ? '¥' + price.swz : '-'}</td>`;
@@ -177,12 +196,12 @@
                         var train = data[i];
                         for (var j = 0; j < train.list.length; j++) {
                             var item = train.list[j];
-                            html += `<tr onclick="queryPrice('${item.trainNo}', '${item.fromStationNo}', '${item.toStationNo}', '${date}', this)">`;
+                            html += `<tr ${j == 0 && train.list.length > 1 ? ' class="group"' : ''} onclick="queryPrice('${item.trainNo}', '${item.fromStationNo}', '${item.toStationNo}', '${date}', this)">`;
                             if (j == 0 && train.list.length > 1) {
                                 var height = 27 * train.list.length;
                                 html += `<td rowspan="${train.list.length}" style="line-height:${height}px;">${train.code}</td>`;
                             } else if (j == 0) {
-                                html += `<td rowspan="${train.list.length}">${train.code}</td>`;
+                                html += `<td>${train.code}</td>`;
                             }
                             if (item.mode.value == 2) {
                                 html += `<td style="color:blue">${item.mode.desc}${item.differ}站</td>`;
@@ -213,6 +232,9 @@
                 },
                 error: function (e) {
                     console.error(e);
+                    if (e.status == 401) {
+                        window.location.reload();
+                    }
                     alert('请求错误,请刷新重新尝试!' + e.responseJSON.message);
                 }
             });
