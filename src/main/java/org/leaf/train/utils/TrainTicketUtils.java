@@ -53,6 +53,8 @@ public class TrainTicketUtils {
             return 0;
         } else if ("*".equals(num)) {
             return 0;
+        } else if ("有".equals(num)) {//有,暂且认为有1张
+            return 1;
         } else {
             return Integer.parseInt(num);
         }
