@@ -8,16 +8,16 @@ public class Price {
 
     private String tranNo;
 
-    private Double gjrwNum;
-    private Double rwNum;
-    private Double rzNum;
-    private Double wzNum;
-    private Double ywNum;
-    private Double yzNum;
-    private Double edzNum;
-    private Double ydzNum;
-    private Double swzNum;
-    private Double tdzNum;
+    private double gjrw;
+    private double rw;
+    private double rz;
+    private double wz;
+    private double yw;
+    private double yz;
+    private double edz;
+    private double ydz;
+    private double swz;
+    private double tdz;
 
     public String getTranNo() {
         return tranNo;
@@ -28,93 +28,93 @@ public class Price {
         return this;
     }
 
-    public Double getGjrwNum() {
-        return gjrwNum;
+    public double getGjrw() {
+        return gjrw;
     }
 
-    public Price setGjrwNum(Double gjrwNum) {
-        this.gjrwNum = gjrwNum;
+    public Price setGjrw(double gjrw) {
+        this.gjrw = gjrw;
         return this;
     }
 
-    public Double getRwNum() {
-        return rwNum;
+    public double getRw() {
+        return rw;
     }
 
-    public Price setRwNum(Double rwNum) {
-        this.rwNum = rwNum;
+    public Price setRw(double rw) {
+        this.rw = rw;
         return this;
     }
 
-    public Double getRzNum() {
-        return rzNum;
+    public double getRz() {
+        return rz;
     }
 
-    public Price setRzNum(Double rzNum) {
-        this.rzNum = rzNum;
+    public Price setRz(double rz) {
+        this.rz = rz;
         return this;
     }
 
-    public Double getWzNum() {
-        return wzNum;
+    public double getWz() {
+        return wz;
     }
 
-    public Price setWzNum(Double wzNum) {
-        this.wzNum = wzNum;
+    public Price setWz(double wz) {
+        this.wz = wz;
         return this;
     }
 
-    public Double getYwNum() {
-        return ywNum;
+    public double getYw() {
+        return yw;
     }
 
-    public Price setYwNum(Double ywNum) {
-        this.ywNum = ywNum;
+    public Price setYw(double yw) {
+        this.yw = yw;
         return this;
     }
 
-    public Double getYzNum() {
-        return yzNum;
+    public double getYz() {
+        return yz;
     }
 
-    public Price setYzNum(Double yzNum) {
-        this.yzNum = yzNum;
+    public Price setYz(double yz) {
+        this.yz = yz;
         return this;
     }
 
-    public Double getEdzNum() {
-        return edzNum;
+    public double getEdz() {
+        return edz;
     }
 
-    public Price setEdzNum(Double edzNum) {
-        this.edzNum = edzNum;
+    public Price setEdz(double edz) {
+        this.edz = edz;
         return this;
     }
 
-    public Double getYdzNum() {
-        return ydzNum;
+    public double getYdz() {
+        return ydz;
     }
 
-    public Price setYdzNum(Double ydzNum) {
-        this.ydzNum = ydzNum;
+    public Price setYdz(double ydz) {
+        this.ydz = ydz;
         return this;
     }
 
-    public Double getSwzNum() {
-        return swzNum;
+    public double getSwz() {
+        return swz;
     }
 
-    public Price setSwzNum(Double swzNum) {
-        this.swzNum = swzNum;
+    public Price setSwz(double swz) {
+        this.swz = swz;
         return this;
     }
 
-    public Double getTdzNum() {
-        return tdzNum;
+    public double getTdz() {
+        return tdz;
     }
 
-    public Price setTdzNum(Double tdzNum) {
-        this.tdzNum = tdzNum;
+    public Price setTdz(double tdz) {
+        this.tdz = tdz;
         return this;
     }
 }

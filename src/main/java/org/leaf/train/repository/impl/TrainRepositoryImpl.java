@@ -148,10 +148,9 @@ public class TrainRepositoryImpl implements TrainRepository {
             return price;
         }
 
-        String s = "https://kyfw.12306.cn/otn/leftTicket/queryTicketPrice?train_no={}&from_station_no={}&to_station_no={}&seat_types=OMO&train_date={}";
+        String s = "https://kyfw.12306.cn/otn/leftTicket/queryTicketPrice?train_no={}&from_station_no={}&to_station_no={}&seat_types=1413O9MO6WZP&train_date={}";
         FormattingTuple ft = MessageFormatter.arrayFormat(s, new Object[]{trainNo, fromTrainIndex, toTrainIndex, date});
         String url = ft.getMessage();
-        log.info("chaxun ");
         String r = new GetEx(url).send();
         if ("-1".equals(r)) {//查询错误
             return null;
@@ -167,15 +166,15 @@ public class TrainRepositoryImpl implements TrainRepository {
         //格式统一为"¥98.5"
         price = new Price();
         price.setTranNo((String) data.get("train_no"));
-        price.setEdzNum(TrainTicketUtils.toPrice((String) data.get("O")));
-        price.setYdzNum(TrainTicketUtils.toPrice((String) data.get("M")));
-        price.setWzNum(TrainTicketUtils.toPrice((String) data.get("WZ")));
-        price.setSwzNum(TrainTicketUtils.toPrice((String) data.get("A9")));
-        price.setGjrwNum(TrainTicketUtils.toPrice((String) data.get("A6")));
-        price.setRwNum(TrainTicketUtils.toPrice((String) data.get("A4")));
-        price.setYwNum(TrainTicketUtils.toPrice((String) data.get("A3")));
-        price.setYzNum(TrainTicketUtils.toPrice((String) data.get("A1")));
-        price.setTdzNum(TrainTicketUtils.toPrice((String) data.get("P")));
+        price.setEdz(TrainTicketUtils.toPrice((String) data.get("O")));
+        price.setYdz(TrainTicketUtils.toPrice((String) data.get("M")));
+        price.setWz(TrainTicketUtils.toPrice((String) data.get("WZ")));
+        price.setSwz(TrainTicketUtils.toPrice((String) data.get("A9")));
+        price.setGjrw(TrainTicketUtils.toPrice((String) data.get("A6")));
+        price.setRw(TrainTicketUtils.toPrice((String) data.get("A4")));
+        price.setYw(TrainTicketUtils.toPrice((String) data.get("A3")));
+        price.setYz(TrainTicketUtils.toPrice((String) data.get("A1")));
+        price.setTdz(TrainTicketUtils.toPrice((String) data.get("P")));
 
         CacheUtils.putPrice(trainNo, fromTrainIndex, toTrainIndex, date, price);
 
