@@ -26,7 +26,7 @@ import java.security.cert.X509Certificate;
 import java.util.Map;
 
 /**
- * @author yaoshuhong
+ * @author leaf
  * @date 2016-09-27 16:29
  */
 public class HttpClientFactory {

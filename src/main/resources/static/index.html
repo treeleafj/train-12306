@@ -90,7 +90,7 @@
         });
 
         var title = '<tr><th>车次</th><th>类型</th><th>出发地</th><th>目的地</th>' +
-                '<th>发车时间</th><th>商务座</th><th>一等座</th><th>二等座</th><th>无座</th></tr>';
+                '<th>发车时间</th><th>商务座</th><th>一等座</th><th>二等座</th><th>无座</th><th>软座</th><th>硬座</th><th>软卧</th><th>硬卧</th><th>高级软卧</th></tr>';
         $('#grid').html(title);
 
         $('#search').click(function () {
@@ -140,29 +140,32 @@
                             html += '<tr>';
                             if (j == 0 && train.list.length > 1) {
                                 var height = 27 * train.list.length;
-                                html += `<td rowspan="${train.list.length}" style="line-height:${height}px;">${train.trainCode}</td>`;
+                                html += `<td rowspan="${train.list.length}" style="line-height:${height}px;">${train.code}</td>`;
                             } else if (j == 0) {
-                                html += `<td rowspan="${train.list.length}">${train.trainCode}</td>`;
+                                html += `<td rowspan="${train.list.length}">${train.code}</td>`;
                             }
-                            var color;
-                            if (item.type.value == 2) {
-                                color = 'blue';
-                            } else if (item.type.value == 3) {
-                                color = 'red';
-                            } else if (item.type.value == 4) {
-                                color = 'green';
+                            if (item.mode.value == 2) {
+                                html += `<td style="color:blue">${item.mode.desc}${item.differ}站</td>`;
+                            } else if (item.mode.value == 3) {
+                                html += `<td style="color:red">${item.mode.desc}${item.differ}站</td>`;
+                            } else if (item.mode.value == 4) {
+                                html += `<td style="color:green">${item.mode.desc}${item.differ}站</td>`;
                             } else {
-                                color = 'none'
+                                html += `<td style="font-weight: bold;">${item.mode.desc}</td>`;
                             }
-                            html += `<td style="color:${color}">${item.type.desc}</td>`;
 
                             html += `<td>${item.fromStationName}</td>`;
                             html += `<td>${item.toStationName}</td>`;
                             html += `<td>${item.startTime}</td>`;
-                            html += `<td>${item.swzNum}</td>`;
-                            html += `<td>${item.ydzNum}</td>`;
-                            html += `<td>${item.edzNum}</td>`;
-                            html += `<td>${item.wzNum}</td>`;
+                            html += `<td ${item.swzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.swzNum}</td>`;
+                            html += `<td ${item.ydzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.ydzNum}</td>`;
+                            html += `<td ${item.edzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.edzNum}</td>`;
+                            html += `<td ${item.wzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.wzNum}</td>`;
+                            html += `<td ${item.rzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.rzNum}</td>`;
+                            html += `<td ${item.yzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.yzNum}</td>`;
+                            html += `<td ${item.rwNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.rwNum}</td>`;
+                            html += `<td ${item.ywNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.ywNum}</td>`;
+                            html += `<td ${item.gjrwNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.gjrwNum}</td>`;
                             html += `</tr>`;
                         }
                     }

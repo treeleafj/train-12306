@@ -1,9 +1,9 @@
-package org.leaf.train.model;
+package org.leaf.train.repository.model;
 
 /**
  * 站点信息
  *
- * @author yaoshuhong
+ * @author leaf
  * @date 2016-09-27 17:11
  */
 public class TrainStation {

@@ -1,9 +1,9 @@
-package org.leaf.train.model;
+package org.leaf.train.entity;
 
 /**
- * 旅程信息
+ * 旅程信息,用户要求的出发地和目的地,以及日期
  *
- * @author yaoshuhong
+ * @author leaf
  * @date 2016-09-27 17:30
  */
 public class Journey {
@@ -12,14 +12,17 @@ public class Journey {
      * 车次代码
      */
     private String code;
+
     /**
      * 上车站代码
      */
     private String from;
+
     /**
      * 下车站代码
      */
     private String to;
+
     /**
      * 日期
      */

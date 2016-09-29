@@ -1,9 +1,9 @@
-package org.leaf.train.model;
+package org.leaf.train.repository.model;
 
 /**
  * 列车座位信息
  *
- * @author yaoshuhong
+ * @author leaf
  * @date 2016-09-27 14:49
  */
 public class TrainTicket {
@@ -76,7 +76,7 @@ public class TrainTicket {
     private String train_class_name;
 
     /**
-     * 历史(01:53)
+     * 历时(01:53)
      */
     private String lishi;
 
@@ -86,7 +86,7 @@ public class TrainTicket {
     private String canWebBuy;
 
     /**
-     * 历史多少分钟(数值)
+     * 历时多少分钟(数值)
      */
     private String lishiValue;
     private String yp_info;
@@ -127,6 +127,10 @@ public class TrainTicket {
     private String controlled_train_message;
 
     private String gg_num;
+
+    /**
+     * 高级软卧
+     */
     private String gr_num;
 
     /**

@@ -4,7 +4,7 @@ import org.apache.http.client.HttpClient;
 import org.treeleaf.common.http.httpclient.Get;
 
 /**
- * @author yaoshuhong
+ * @author leaf
  * @date 2016-09-27 16:37
  */
 public class GetEx extends Get {

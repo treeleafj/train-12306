@@ -1,9 +1,9 @@
-package org.leaf.train.model;
+package org.leaf.train.repository.model;
 
 import java.util.Map;
 
 /**
- * @author yaoshuhong
+ * @author leaf
  * @date 2016-09-27 15:16
  */
 public class TrainResponse<T> {
