@@ -29,7 +29,7 @@ public class CacheUtils {
                     .withExpiry(Expirations.timeToLiveExpiration(Duration.of(1, TimeUnit.HOURS))).build())
 
             .withCache("tickets", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, ArrayList.class, ResourcePoolsBuilder.heap(100000))
-                    .withExpiry(Expirations.timeToLiveExpiration(Duration.of(30, TimeUnit.SECONDS))).build())
+                    .withExpiry(Expirations.timeToLiveExpiration(Duration.of(1, TimeUnit.MINUTES))).build())
 
             .withCache("prices", CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, Price.class, ResourcePoolsBuilder.heap(100000))
                     .withExpiry(Expirations.timeToLiveExpiration(Duration.of(1, TimeUnit.DAYS))).build())
