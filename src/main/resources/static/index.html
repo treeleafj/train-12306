@@ -235,6 +235,7 @@
                     if (e.status == 401) {
                         window.location.reload();
                     }
+                    $('#search').attr('disabled', false);
                     alert('请求错误,请刷新重新尝试!' + e.responseJSON.message);
                 }
             });

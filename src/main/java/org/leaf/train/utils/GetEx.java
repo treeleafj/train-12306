@@ -15,6 +15,7 @@ public class GetEx extends Get {
      */
     public GetEx(String address) {
         super(address);
+        readTimeout(10000);
     }
 
     @Override
