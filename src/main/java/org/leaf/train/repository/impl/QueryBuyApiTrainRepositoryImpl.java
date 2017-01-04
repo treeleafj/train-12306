@@ -48,11 +48,14 @@ public class QueryBuyApiTrainRepositoryImpl extends TrainRepositoryImpl {
             int num = 0;
             while (true) {
                 try {
+                    long t1 = System.currentTimeMillis();
                     r = new GetEx(url).send();
+                    log.info("用时:{}", System.currentTimeMillis() - t1);
                     break;
                 } catch (Exception e) {
-                    if (num++ == 3) {
-                        log.info("第{}次失败", num, e.getMessage());
+                    num++;
+                    log.info("第{}次失败:{}", num, e.getMessage());
+                    if (num == 10) {
                         throw e;
                     }
                 }

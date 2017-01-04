@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author leaf
  * @date 2016-09-29 10:40
  */
-@Repository
+//@Repository
 public class TrainRepositoryImpl implements TrainRepository {
 
     private static Logger log = LoggerFactory.getLogger(TrainRepositoryImpl.class);
