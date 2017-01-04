@@ -60,7 +60,7 @@ public class TrainTicketUtils {
         } else if ("*".equals(num)) {
             return 0;
         } else if ("有".equals(num)) {//有,暂且认为有1张
-            return 1;
+            return 9999;
         } else {
             return Integer.parseInt(num);
         }

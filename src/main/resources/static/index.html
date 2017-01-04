@@ -216,15 +216,15 @@
                             html += `<td>${item.fromStationName}</td>`;
                             html += `<td>${item.toStationName}</td>`;
                             html += `<td>${item.startTime}</td>`;
-                            html += `<td ${item.swzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.swzNum}</td>`;
-                            html += `<td ${item.ydzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.ydzNum}</td>`;
-                            html += `<td ${item.edzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.edzNum}</td>`;
-                            html += `<td ${item.wzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.wzNum}</td>`;
-                            html += `<td ${item.rzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.rzNum}</td>`;
-                            html += `<td ${item.yzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.yzNum}</td>`;
-                            html += `<td ${item.rwNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.rwNum}</td>`;
-                            html += `<td ${item.ywNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.ywNum}</td>`;
-                            html += `<td ${item.gjrwNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.gjrwNum}</td>`;
+                            html += `<td ${item.swzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.swzNum == 9999 ? '有' : item.swzNum}</td>`;
+                            html += `<td ${item.ydzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.ydzNum == 9999 ? '有' : item.ydzNum}</td>`;
+                            html += `<td ${item.edzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.edzNum == 9999 ? '有' : item.edzNum}</td>`;
+                            html += `<td ${item.wzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.wzNum == 9999 ? '有' : item.wzNum}</td>`;
+                            html += `<td ${item.rzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.rzNum == 9999 ? '有' : item.rzNum}</td>`;
+                            html += `<td ${item.yzNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.yzNum == 9999 ? '有' : item.yzNum}</td>`;
+                            html += `<td ${item.rwNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.rwNum == 9999 ? '有' : item.rwNum}</td>`;
+                            html += `<td ${item.ywNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.ywNum == 9999 ? '有' : item.ywNum}</td>`;
+                            html += `<td ${item.gjrwNum > 0 ? 'style="font-weight: bold;"' : ''}>${item.gjrwNum == 9999 ? '有' : item.gjrwNum}</td>`;
                             html += `</tr>`;
                         }
                     }
