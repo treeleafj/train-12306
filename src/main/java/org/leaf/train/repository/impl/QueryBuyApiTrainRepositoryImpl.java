@@ -44,18 +44,16 @@ public class QueryBuyApiTrainRepositoryImpl extends TrainRepositoryImpl {
             FormattingTuple ft = MessageFormatter.arrayFormat(s, new Object[]{journey.getDate(), StationUtils.getTelecode(journey.getFrom()), StationUtils.getTelecode(journey.getTo())});
             String url = ft.getMessage();
 
-            String r = null;
+            String r;
             int num = 0;
             while (true) {
                 try {
-                    long t1 = System.currentTimeMillis();
                     r = new GetEx(url).send();
-                    log.info("用时:{}", System.currentTimeMillis() - t1);
                     break;
                 } catch (Exception e) {
                     num++;
-                    log.info("第{}次失败:{}", num, e.getMessage());
-                    if (num == 10) {
+                    log.info("查询车次第{}次失败:{}", num, e.getMessage());
+                    if (num == 20) {
                         throw e;
                     }
                 }

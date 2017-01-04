@@ -6,7 +6,7 @@
 
     <groupId>org.leaf.train</groupId>
     <artifactId>train-12306</artifactId>
-    <version>1.0</version>
+    <version>1.3</version>
 
     <packaging>jar</packaging>
 

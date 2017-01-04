@@ -113,7 +113,21 @@ public class TrainRepositoryImpl implements TrainRepository {
                 StationUtils.getTelecode(journey.getFrom()), StationUtils.getTelecode(journey.getTo()), journey.getDate()});
         String url = ft.getMessage();
 
-        String r = new GetEx(url).send();
+        int num = 0;
+        String r;
+        while (true) {
+            try {
+                r = new GetEx(url).send();
+                break;
+            } catch (Exception e) {
+                num++;
+                log.info("查询站点第{}次失败:{}", num, e.getMessage());
+                if (num == 20) {
+                    throw e;
+                }
+            }
+        }
+
         if ("-1".equals(r)) {//查询错误
             log.error("查询错误:{}", url);
             return new ArrayList<>(0);
