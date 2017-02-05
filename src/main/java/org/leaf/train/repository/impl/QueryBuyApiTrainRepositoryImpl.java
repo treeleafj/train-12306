@@ -40,7 +40,7 @@ public class QueryBuyApiTrainRepositoryImpl extends TrainRepositoryImpl {
         List<TrainInfo> trainTickets = CacheUtils.getTickets(journey);
 
         if (trainTickets == null) {
-            String s = "https://kyfw.12306.cn/otn/leftTicket/queryA?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=ADULT";
+            String s = "https://kyfw.12306.cn/otn/leftTicket/queryZ?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=ADULT";
             FormattingTuple ft = MessageFormatter.arrayFormat(s, new Object[]{journey.getDate(), StationUtils.getTelecode(journey.getFrom()), StationUtils.getTelecode(journey.getTo())});
             String url = ft.getMessage();
 
@@ -49,6 +49,30 @@ public class QueryBuyApiTrainRepositoryImpl extends TrainRepositoryImpl {
             while (true) {
                 try {
                     r = new GetEx(url).send();
+
+                    try {
+                        ExTrainResponse trainResponse = Jsoner.toObj(r, ExTrainResponse.class);
+                        if (!trainResponse.getStatus()) {
+                            trainTickets = new ArrayList<>(0);
+                        } else {
+
+                            trainTickets = new ArrayList<>(trainResponse.getData().length);
+
+                            for (Map<String, Object> item : trainResponse.getData()) {
+                                Object o = item.get("queryLeftNewDTO");
+                                String json = Jsoner.toJson(o);
+                                TrainTicket t = Jsoner.toObj(json, TrainTicket.class);
+                                trainTickets.add(TrainInfoConverter.toTrainInfo(t));
+                            }
+                        }
+
+                        CacheUtils.putTickets(journey, trainTickets);
+                    } catch (Exception e) {
+                        log.error("转义失败:{}, {}, {}", url, Jsoner.toJson(journey), r);
+                        throw new RuntimeException(e);
+                    }
+
+
                     break;
                 } catch (Exception e) {
                     num++;
@@ -57,6 +81,7 @@ public class QueryBuyApiTrainRepositoryImpl extends TrainRepositoryImpl {
                         throw e;
                     }
                 }
+
             }
             log.info("第{}次查询", count.addAndGet(1));
             if ("-1".equals(r)) {//查询错误
@@ -64,27 +89,6 @@ public class QueryBuyApiTrainRepositoryImpl extends TrainRepositoryImpl {
                 return new ArrayList<>(0);
             }
 
-            try {
-                ExTrainResponse trainResponse = Jsoner.toObj(r, ExTrainResponse.class);
-                if (!trainResponse.getStatus()) {
-                    trainTickets = new ArrayList<>(0);
-                } else {
-
-                    trainTickets = new ArrayList<>(trainResponse.getData().length);
-
-                    for (Map<String, Object> item : trainResponse.getData()) {
-                        Object o = item.get("queryLeftNewDTO");
-                        String json = Jsoner.toJson(o);
-                        TrainTicket t = Jsoner.toObj(json, TrainTicket.class);
-                        trainTickets.add(TrainInfoConverter.toTrainInfo(t));
-                    }
-                }
-
-                CacheUtils.putTickets(journey, trainTickets);
-            } catch (Exception e) {
-                log.error("转义失败:{}, {}, {}", url, Jsoner.toJson(journey), r);
-                throw new RuntimeException(e);
-            }
         }
 
         if (StringUtils.isBlank(journey.getCode())) {
