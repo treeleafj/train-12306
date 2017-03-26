@@ -40,7 +40,7 @@ public class QueryBuyApiTrainRepositoryImpl extends TrainRepositoryImpl {
         List<TrainInfo> trainTickets = CacheUtils.getTickets(journey);
 
         if (trainTickets == null) {
-            String s = "https://kyfw.12306.cn/otn/leftTicket/queryZ?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=ADULT";
+            String s = "https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date={}&leftTicketDTO.from_station={}&leftTicketDTO.to_station={}&purpose_codes=ADULT";
             FormattingTuple ft = MessageFormatter.arrayFormat(s, new Object[]{journey.getDate(), StationUtils.getTelecode(journey.getFrom()), StationUtils.getTelecode(journey.getTo())});
             String url = ft.getMessage();
 
